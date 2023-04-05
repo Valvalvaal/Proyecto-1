@@ -3,22 +3,12 @@ package inventarioHotel;
 import java.sql.Date;
 
 public class Tarifa {
-	private Date fecha;
 	private int precio;
 	private TipoHabitacion tipo;
 
-	public Tarifa(Date fecha, int precio, TipoHabitacion tipo) {
-		this.fecha = fecha;
+	public Tarifa(int precio, TipoHabitacion tipo) {
 		this.precio = precio;
 		this.tipo = tipo;
-	}
-
-	public Date getFecha() {
-		return fecha;
-	}
-
-	public void setFecha(Date fecha) {
-		this.fecha = fecha;
 	}
 
 	public int getPrecio() {
