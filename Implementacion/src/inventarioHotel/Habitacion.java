@@ -1,12 +1,15 @@
 package inventarioHotel;
 
+import java.util.EnumMap;
+import java.util.HashMap;
+
 public class Habitacion {
 	private String id;
 	private String ubicacion;
 	private TipoHabitacion tipo;
-	private Feature features;
+	private EnumMap<Feature, Boolean> features;
 
-	public Habitacion(String id, String ubicacion, TipoHabitacion tipo, Feature features) {
+	public Habitacion(String id, String ubicacion, TipoHabitacion tipo, EnumMap<Feature, Boolean> features) {
 		this.id = id;
 		this.ubicacion = ubicacion;
 		this.tipo = tipo;
@@ -37,11 +40,11 @@ public class Habitacion {
 		this.tipo = tipo;
 	}
 
-	public Feature getFeatures() {
+	public EnumMap<Feature, Boolean> getFeatures() {
 		return features;
 	}
 
-	public void setFeatures(Feature features) {
+	public void setFeatures(EnumMap<Feature, Boolean> features) {
 		this.features = features;
 	}
 
