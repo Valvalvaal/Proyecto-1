@@ -1,7 +1,6 @@
 package inventarioHotel;
 
 import java.util.EnumMap;
-import java.util.HashMap;
 
 public class Habitacion {
 	private String id;

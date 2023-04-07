@@ -1,7 +1,5 @@
 package inventarioHotel;
 
-import java.sql.Date;
-
 public class Tarifa {
 	private int precio;
 	private TipoHabitacion tipo;
