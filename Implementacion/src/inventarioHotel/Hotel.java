@@ -38,8 +38,16 @@ public class Hotel {
         return restaurantes;
     }
 
+    public Restaurante getRestauranteByName(String nombre) {
+        return restaurantes.get(nombre);
+    }
+
     public void setRestaurantes(HashMap<String, Restaurante> restaurantes) {
         this.restaurantes = restaurantes;
+    }
+
+    public void addRestaurante(Restaurante restaurante) {
+        restaurantes.put(restaurante.getNombre(), restaurante);
     }
 
     public HashMap<String, Servicio> getServicios() {
@@ -57,4 +65,5 @@ public class Hotel {
     public void setTarifasPorFecha(HashMap<Date, List<Tarifa>> tarifasPorFecha) {
         this.tarifasPorFecha = tarifasPorFecha;
     }
+
 }

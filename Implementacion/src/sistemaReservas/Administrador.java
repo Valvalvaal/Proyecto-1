@@ -16,6 +16,7 @@ import inventarioHotel.Habitacion;
 import inventarioHotel.Hotel;
 import inventarioHotel.Tarifa;
 import inventarioHotel.TipoHabitacion;
+import inventarioHotel.Restaurante;
 
 public class Administrador extends Usuario {
     Hotel hotel; // TODO:
@@ -74,6 +75,31 @@ public class Administrador extends Usuario {
                 }
                 Habitacion habitacion = new Habitacion(id, ubicacion, tipo, features);
                 this.agregarHabitacion(habitacion, this.hotel.getHabitaciones());
+                linea = br.readLine();
+            }
+
+            br.close();
+        }
+    }
+
+    public void cargarMenus(String filePath) throws FileNotFoundException, IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String linea = br.readLine(); // La primera línea del archivo se ignora porque únicamente tiene los títulos de
+                                          // las columnas
+            linea = br.readLine();
+            while (linea != null) // Cuando se llegue al final del archivo, linea tendrá el valor null
+            {
+                // Separar los valores que estaban en una línea
+                String[] partes = linea.split(",");
+                String nombre = partes[0];
+                Restaurante restaurante = hotel.getRestauranteByName(nombre);
+                if (restaurante == null) {
+                    restaurante = new Restaurante(nombre);
+                    hotel.addRestaurante(restaurante);
+                }
+                String plato = partes[1];
+                Integer precio = Integer.parseInt(partes[2]);
+                restaurante.addPlato(plato, precio);
                 linea = br.readLine();
             }
 

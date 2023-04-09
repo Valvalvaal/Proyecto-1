@@ -1,30 +1,33 @@
 package inventarioHotel;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Restaurante {
-	private String nombreRestaurante;
-	private ArrayList<String> menu;
+	private String nombre;
+	private HashMap<String, Integer> menu;
 
-	public Restaurante(String nombreRestaurante, ArrayList<String> menu) {
-		this.nombreRestaurante = nombreRestaurante;
-		this.menu = menu;
+	public Restaurante(String nombre) {
+		this.nombre = nombre;
 	}
 
-	public String getNombreRestaurante() {
-		return nombreRestaurante;
+	public String getNombre() {
+		return nombre;
 	}
 
-	public void setNombreRestaurante(String nombreRestaurante) {
-		this.nombreRestaurante = nombreRestaurante;
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
-	public ArrayList<String> getMenu() {
+	public HashMap<String, Integer> getMenu() {
 		return menu;
 	}
 
-	public void setMenu(ArrayList<String> menu) {
+	public void setMenu(HashMap<String, Integer> menu) {
 		this.menu = menu;
 
+	}
+
+	public void addPlato(String nombrePlato, Integer precio) {
+		menu.put(nombrePlato, precio);
 	}
 }
