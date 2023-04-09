@@ -1,4 +1,4 @@
-package Facturacion;
+package facturacion;
 
 public class Factura {
 	private String idFactura;

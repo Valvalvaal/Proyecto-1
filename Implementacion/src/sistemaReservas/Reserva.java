@@ -1,4 +1,4 @@
-package SistemaReservas;
+package sistemaReservas;
 
 import java.sql.Date;
 
@@ -6,7 +6,7 @@ public class Reserva {
 	private Date fecha;
 	private String id;
 
-	public Reserva(Date fecha,String id) {
+	public Reserva(Date fecha, String id) {
 		this.fecha = fecha;
 		this.id = id;
 	}
@@ -25,5 +25,5 @@ public class Reserva {
 
 	public void setId(String id) {
 		this.id = id;
-}
+	}
 }

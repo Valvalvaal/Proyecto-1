@@ -1,13 +1,11 @@
-package InventarioHotel;
-
+package inventarioHotel;
 
 public class Servicio {
 	private String servicio;
 	private int precio;
 	private String descripcion;
 
-
-	public Servicio(String servicio,int precio, String descripcion) {
+	public Servicio(String servicio, int precio, String descripcion) {
 		this.servicio = servicio;
 		this.precio = precio;
 		this.descripcion = descripcion;
@@ -28,6 +26,7 @@ public class Servicio {
 	public void setPrecio(int precio) {
 		this.precio = precio;
 	}
+
 	public String getDescripcion() {
 		return descripcion;
 	}

@@ -1,9 +1,8 @@
-package InventarioHotel;
+package inventarioHotel;
 
 public class Cama {
 	private int capacidad;
 	private TipoCama tipo;
-
 
 	public Cama(int capacidad, TipoCama tipo) {
 		this.capacidad = capacidad;
@@ -25,5 +24,5 @@ public class Cama {
 	public void setTipo(TipoCama tipo) {
 		this.tipo = tipo;
 	}
-	
+
 }

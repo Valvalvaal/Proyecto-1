@@ -1,4 +1,4 @@
-package SistemaReservas;
+package sistemaReservas;
 
 public class Huesped {
 	private String nombre;
@@ -28,6 +28,7 @@ public class Huesped {
 	public void setDocumento(String documento) {
 		this.documento = documento;
 	}
+
 	public String getCorreo() {
 		return correo;
 	}

@@ -1,10 +1,10 @@
-package SistemaReservas;
+package sistemaReservas;
 
 public class Usuario {
 	private String user;
 	private String password;
 
-	public Usuario(String user,String password) {
+	public Usuario(String user, String password) {
 		this.user = user;
 		this.password = password;
 	}
@@ -16,6 +16,7 @@ public class Usuario {
 	public void setUser(String user) {
 		this.user = user;
 	}
+
 	public String getPassword() {
 		return password;
 	}
