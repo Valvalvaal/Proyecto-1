@@ -1,10 +1,20 @@
 package sistemaReservas;
 
-import java.sql.Date;
+import java.util.Date;
+import java.util.ArrayList;
 
 public class Reserva {
 	private Date fecha;
 	private String id;
+	private ArrayList<Huesped> huespedes;
+
+	public ArrayList<Huesped> getHuespedes() {
+		return huespedes;
+	}
+
+	public void setHuespedes(ArrayList<Huesped> huespedes) {
+		this.huespedes = huespedes;
+	}
 
 	public Reserva(Date fecha, String id) {
 		this.fecha = fecha;

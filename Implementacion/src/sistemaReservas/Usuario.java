@@ -3,10 +3,12 @@ package sistemaReservas;
 public class Usuario {
 	private String user;
 	private String password;
+	private TipoUsuario tipoUsuario;
 
-	public Usuario(String user, String password) {
+	public Usuario(String user, String password, TipoUsuario tipoUsuario) {
 		this.user = user;
 		this.password = password;
+		this.tipoUsuario = tipoUsuario;
 	}
 
 	public String getUser() {
@@ -23,5 +25,9 @@ public class Usuario {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public TipoUsuario getTipoUsuario() {
+		return tipoUsuario;
 	}
 }
