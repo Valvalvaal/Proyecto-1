@@ -28,7 +28,7 @@ public class ConsolaHotel {
      * operaciones de la aplicación. Esta calculadora también contiene toda la
      * información sobre los atletas después de que se cargue desde un archivo.
      */
-    private Hotel hotel;
+    private Hotel hotel = new Hotel();
     private Usuario usuario;
     private HashMap<String, Usuario> usuarios = new HashMap<>();
 
@@ -117,11 +117,9 @@ public class ConsolaHotel {
     }
 
     public void ejecutarFuncionAdmin(int opcion) {
-        this.hotel = new Hotel();
-        Administrador admin = new Administrador(usuario.getUser(), usuario.getPassword(), this.hotel);
         if (opcion == 0)
             try {
-                cargarHotel(admin);
+                cargarHotel();
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -138,12 +136,12 @@ public class ConsolaHotel {
             usuario = null;
     }
 
-    private void cargarHotel(Administrador admin) throws IOException {
-        admin.cargarHabitaciones(
+    private void cargarHotel() throws IOException {
+        hotel.cargarHabitaciones(
                 "PropertyManagementSystem" + File.separator + "data" + File.separator + "habitaciones.csv");
-        admin.cargarCamas(
+        hotel.cargarCamas(
                 "PropertyManagementSystem" + File.separator + "data" + File.separator + "camas.csv");
-        admin.cargarMenus(
+        hotel.cargarMenus(
                 "PropertyManagementSystem" + File.separator + "data" + File.separator + "menus.csv");
     }
 
