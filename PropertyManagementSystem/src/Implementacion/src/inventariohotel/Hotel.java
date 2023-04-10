@@ -1,6 +1,11 @@
 package inventariohotel;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 
@@ -76,6 +81,102 @@ public class Hotel {
 
     public void agregarListaDeTarifasPorFecha(Date fecha, List<Tarifa> tarifas) {
         tarifasPorFecha.put(fecha, tarifas);
+    }
+
+    public void agregarTarifa(Tarifa tarifa, Date fecha) {
+        List<Tarifa> tarifas = this.tarifasPorFecha.get(fecha);
+        if (tarifas == null) {
+            tarifas = new ArrayList<>();
+        }
+        tarifas.add(tarifa);
+        this.tarifasPorFecha.put(fecha, tarifas);
+    }
+
+    public void agregarTarifaMultiplesFechas(Tarifa tarifa, Date fechaInicio, Date fechaFin) {
+        Date fecha = fechaInicio;
+        while (fecha.compareTo(fechaFin) <= 0) {
+            agregarTarifa(tarifa, fecha);
+            fecha = new Date(fecha.getTime() + 86400000); // 86400000 ms = 1 día
+        }
+    }
+
+    /**
+     * @param filePath
+     * @throws IOException
+     */
+    public void cargarHabitaciones(String filePath) throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String linea = br.readLine(); // Ignorar el encabezado del archivo
+            linea = br.readLine();
+            while (linea != null) // Cuando se llegue al final del archivo, linea tendrá el valor null
+            {
+                // Separar los valores que estaban en una línea
+                String[] partes = linea.split(",");
+                String id = partes[0];
+                String ubicacion = partes[1];
+                TipoHabitacion tipo = TipoHabitacion.valueOf(partes[2].toUpperCase());
+                EnumMap<Feature, Boolean> features = new EnumMap<>(Feature.class);
+                for (Feature f : Feature.values()) {
+                    Boolean tieneFeature = Boolean.parseBoolean(partes[3 + f.ordinal()]);
+                    features.put(f, tieneFeature);
+                }
+                Habitacion habitacion = new Habitacion(id, ubicacion, tipo, features);
+                this.agregarHabitacion(habitacion);
+                linea = br.readLine();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void cargarCamas(String filePathString) throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader(filePathString))) {
+            String linea = br.readLine();
+
+            // camas.csv tiene un encabezado que se ignora
+            linea = br.readLine();
+            while (linea != null) // Cuando se llegue al final del archivo, linea tendrá el valor null
+            {
+                // Separar los valores que estaban en una línea
+                String[] partes = linea.split(",");
+                String id = partes[0];
+                Habitacion habitacion = this.getHabitacionById(id);
+                EnumMap<TipoCama, Integer> camas = habitacion.getCamas();
+                for (TipoCama t : TipoCama.values()) {
+                    Integer cantidad = Integer.parseInt(partes[1 + t.ordinal()]);
+                    camas.put(t, cantidad);
+                }
+                linea = br.readLine();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void cargarMenus(String filePath) throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String linea = br.readLine(); // La primera línea del archivo se ignora porque únicamente tiene los títulos
+                                          // de
+                                          // las columnas
+            linea = br.readLine();
+            while (linea != null) // Cuando se llegue al final del archivo, linea tendrá el valor null
+            {
+                // Separar los valores que estaban en una línea
+                String[] partes = linea.split(",");
+                String nombreRestaurante = partes[0];
+                Restaurante restaurante = this.getRestauranteByName(nombreRestaurante);
+                if (restaurante == null) {
+                    restaurante = new Restaurante(nombreRestaurante);
+                    this.addRestaurante(restaurante);
+                }
+                String plato = partes[1];
+                Integer precio = Integer.parseInt(partes[2]);
+                restaurante.addPlato(plato, precio);
+                linea = br.readLine();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
