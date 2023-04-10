@@ -1,6 +1,6 @@
 package inventarioHotel;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -28,6 +28,14 @@ public class Hotel {
 
     public HashMap<String, Habitacion> getHabitaciones() {
         return habitaciones;
+    }
+
+    public void agregarHabitacion(Habitacion habitacion) {
+        habitaciones.put(habitacion.getId(), habitacion);
+    }
+
+    public Habitacion getHabitacionById(String id) {
+        return habitaciones.get(id);
     }
 
     public void setHabitaciones(HashMap<String, Habitacion> habitaciones) {
@@ -64,6 +72,10 @@ public class Hotel {
 
     public void setTarifasPorFecha(HashMap<Date, List<Tarifa>> tarifasPorFecha) {
         this.tarifasPorFecha = tarifasPorFecha;
+    }
+
+    public void agregarListaDeTarifasPorFecha(Date fecha, List<Tarifa> tarifas) {
+        tarifasPorFecha.put(fecha, tarifas);
     }
 
 }

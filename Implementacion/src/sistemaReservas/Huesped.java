@@ -6,8 +6,12 @@ public class Huesped {
 	private String correo;
 	private String celular;
 
-	public Huesped(String nombre, String documento, String correo, String celular) {
+	public Huesped(String nombre) {
 		this.nombre = nombre;
+	}
+
+	public Huesped(String nombre, String documento, String correo, String celular) {
+		this(nombre);
 		this.documento = documento;
 		this.correo = correo;
 		this.celular = celular;

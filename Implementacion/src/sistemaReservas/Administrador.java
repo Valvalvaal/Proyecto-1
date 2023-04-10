@@ -15,6 +15,7 @@ import inventarioHotel.Feature;
 import inventarioHotel.Habitacion;
 import inventarioHotel.Hotel;
 import inventarioHotel.Tarifa;
+import inventarioHotel.TipoCama;
 import inventarioHotel.TipoHabitacion;
 import inventarioHotel.Restaurante;
 
@@ -22,30 +23,27 @@ public class Administrador extends Usuario {
     Hotel hotel; // TODO:
 
     public Administrador(String user, String password, Hotel hotel) {
-        super(user, password);
+        super(user, password, TipoUsuario.ADMIN);
         this.hotel = hotel;
     }
 
-    public void agregarHabitacion(Habitacion habitacion, HashMap<String, Habitacion> habitaciones) {
-        habitaciones.put(habitacion.getId(), habitacion);
+    public void agregarHabitacion(Habitacion habitacion) {
+        hotel.agregarHabitacion(habitacion);
     }
 
-    public void agregarTarifa(Tarifa tarifa, Date fecha, HashMap<Date, List<Tarifa>> tarifasPorFecha) {
-        List<Tarifa> tarifas = tarifasPorFecha.get(fecha);
+    public void agregarTarifa(Tarifa tarifa, Date fecha) {
+        List<Tarifa> tarifas = hotel.getTarifasPorFecha().get(fecha);
         if (tarifas == null) {
             tarifas = new ArrayList<>();
-            tarifas.add(tarifa);
-            tarifasPorFecha.put(fecha, tarifas);
-        } else {
-            tarifas.add(tarifa);
         }
+        tarifas.add(tarifa);
+        hotel.agregarListaDeTarifasPorFecha(fecha, tarifas);
     }
 
-    public void agregarTarifaMultiplesFechas(Tarifa tarifa, Date fechaInicio, Date fechaFin,
-            HashMap<Date, List<Tarifa>> tarifasPorFecha) {
+    public void agregarTarifaMultiplesFechas(Tarifa tarifa, Date fechaInicio, Date fechaFin) {
         Date fecha = fechaInicio;
         while (fecha.compareTo(fechaFin) <= 0) {
-            agregarTarifa(tarifa, fecha, tarifasPorFecha);
+            agregarTarifa(tarifa, fecha);
             fecha = new Date(fecha.getTime() + 86400000); // 86400000 ms = 1 día
         }
     }
@@ -74,7 +72,31 @@ public class Administrador extends Usuario {
                     features.put(f, tieneFeature);
                 }
                 Habitacion habitacion = new Habitacion(id, ubicacion, tipo, features);
-                this.agregarHabitacion(habitacion, this.hotel.getHabitaciones());
+                this.agregarHabitacion(habitacion);
+                linea = br.readLine();
+            }
+
+            br.close();
+        }
+    }
+
+    public void cargarCamas(String filePathString) throws FileNotFoundException, IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader(filePathString))) {
+            String linea = br.readLine();
+
+            // camas.csv tiene un encabezado que se ignora
+            linea = br.readLine();
+            while (linea != null) // Cuando se llegue al final del archivo, linea tendrá el valor null
+            {
+                // Separar los valores que estaban en una línea
+                String[] partes = linea.split(",");
+                String id = partes[0];
+                Habitacion habitacion = this.hotel.getHabitacionById(id);
+                EnumMap<TipoCama, Integer> camas = habitacion.getCamas();
+                for (TipoCama t : TipoCama.values()) {
+                    Integer cantidad = Integer.parseInt(partes[1 + t.ordinal()]);
+                    camas.put(t, cantidad);
+                }
                 linea = br.readLine();
             }
 
@@ -84,7 +106,8 @@ public class Administrador extends Usuario {
 
     public void cargarMenus(String filePath) throws FileNotFoundException, IOException {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String linea = br.readLine(); // La primera línea del archivo se ignora porque únicamente tiene los títulos de
+            String linea = br.readLine(); // La primera línea del archivo se ignora porque únicamente tiene los títulos
+                                          // de
                                           // las columnas
             linea = br.readLine();
             while (linea != null) // Cuando se llegue al final del archivo, linea tendrá el valor null

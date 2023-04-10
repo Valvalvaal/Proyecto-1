@@ -1,12 +1,28 @@
 package inventarioHotel;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.EnumMap;
+import java.util.HashMap;
+
+import sistemaReservas.Huesped;
+import sistemaReservas.Reserva;
 
 public class Habitacion {
 	private String id;
 	private String ubicacion;
 	private TipoHabitacion tipo;
 	private EnumMap<Feature, Boolean> features;
+	private HashMap<Date, Reserva> reservas;
+	private EnumMap<TipoCama, Integer> camas;
+
+	public EnumMap<TipoCama, Integer> getCamas() {
+		return camas;
+	}
+
+	public void setCamas(EnumMap<TipoCama, Integer> camas) {
+		this.camas = camas;
+	}
 
 	public Habitacion(String id, String ubicacion, TipoHabitacion tipo, EnumMap<Feature, Boolean> features) {
 		this.id = id;
@@ -45,6 +61,29 @@ public class Habitacion {
 
 	public void setFeatures(EnumMap<Feature, Boolean> features) {
 		this.features = features;
+	}
+
+	public ArrayList<Huesped> getHuespedes(Date fecha) {
+		Reserva reserva = reservas.get(fecha);
+		if (reserva != null) {
+			return reserva.getHuespedes();
+		}
+		return new ArrayList<>();
+	}
+
+	public int getCapacidadAdultos() {
+		return camas.get(TipoCama.SENCILLA) + camas.get(TipoCama.DOBLE) * 2 + camas.get(TipoCama.QUEEN) * 2
+				+ camas.get(TipoCama.KING) * 2;
+	}
+
+	public int getCapacidadNinos() {
+		return camas.get(TipoCama.KID);
+	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "Habitación #: " + id + "\nUbicación: " + ubicacion + "\nTipo: " + tipo + "\nFeatures: " + features;
 	}
 
 }
