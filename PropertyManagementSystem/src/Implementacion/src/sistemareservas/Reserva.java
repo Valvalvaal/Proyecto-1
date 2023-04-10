@@ -1,4 +1,4 @@
-package sistemaReservas;
+package sistemareservas;
 
 import java.util.Date;
 import java.util.ArrayList;

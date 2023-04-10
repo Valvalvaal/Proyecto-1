@@ -1,4 +1,4 @@
-package Consola;
+package consola;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,22 +9,20 @@ import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.EnumMap;
 import java.util.HashMap;
 
-import InventarioHotel.Feature;
-import InventarioHotel.Habitacion;
-import InventarioHotel.Hotel;
-import InventarioHotel.Restaurante;
-import InventarioHotel.TipoHabitacion;
-import SistemaReservas.Huesped;
-import SistemaReservas.TipoUsuario;
-import SistemaReservas.Usuario;
-import Utils.DateUtils;
+import inventariohotel.Habitacion;
+import inventariohotel.Hotel;
+import inventariohotel.Restaurante;
+import sistemareservas.Administrador;
+import sistemareservas.Huesped;
+import sistemareservas.TipoUsuario;
+import sistemareservas.Usuario;
+import utils.DateUtils;
 
 public class ConsolaHotel {
-
-    public static final String USERS_FILE_PATH = "." + File.separator + "data" + File.separator + "usuarios.csv";
+    public static final String USERS_FILE_PATH = "PropertyManagementSystem" + File.separator + "data" + File.separator
+            + "usuarios.csv";
     /**
      * Esta es el hotel que se usará para hacer todas las
      * operaciones de la aplicación. Esta calculadora también contiene toda la
@@ -87,6 +85,7 @@ public class ConsolaHotel {
                 String password = partes[1];
                 TipoUsuario tipoUsuario = TipoUsuario.valueOf(partes[2].toUpperCase());
                 usuarios.put(username, new Usuario(username, password, tipoUsuario));
+                linea = br.readLine();
             }
 
             br.close();
@@ -95,6 +94,7 @@ public class ConsolaHotel {
 
     public void mostrarMenu() {
         if (usuario.getTipoUsuario().equals(TipoUsuario.ADMIN)) {
+
             mostrarMenuAdmin();
         } else if (usuario.getTipoUsuario().equals(TipoUsuario.EMPLEADO)) {
             mostrarMenuEmpleado();
@@ -104,20 +104,28 @@ public class ConsolaHotel {
     }
 
     public void mostrarMenuAdmin() {
-        int opcionSeleccionada = Integer.parseInt(input("Por favor seleccione una opción"));
+        System.out.println("0. Cargar hotel");
         System.out.println("1. Agregar habitación");
         System.out.println("2. Cargar csv de habitaciones");
         System.out.println("3. Cargar tarifas");
         System.out.println("4. Modificar tarifas de servicios");
         System.out.println("5. Cargar menus de los restaurantes");
         System.out.println("6. Cerrar sesión");
+        int opcionSeleccionada = Integer.parseInt(input("Por favor seleccione una opción"));
 
         ejecutarFuncionAdmin(opcionSeleccionada);
     }
 
     public void ejecutarFuncionAdmin(int opcion) {
-        // if (opcion == 1)
-        // ejecutarAplicacion();
+        this.hotel = new Hotel();
+        Administrador admin = new Administrador(usuario.getUser(), usuario.getPassword(), this.hotel);
+        if (opcion == 0)
+            try {
+                cargarHotel(admin);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         // if (opcion == 2)
         // ejecutarCargarHabitaciones();
         // if (opcion == 3)
@@ -130,11 +138,20 @@ public class ConsolaHotel {
             usuario = null;
     }
 
+    private void cargarHotel(Administrador admin) throws IOException {
+        admin.cargarHabitaciones(
+                "PropertyManagementSystem" + File.separator + "data" + File.separator + "habitaciones.csv");
+        admin.cargarCamas(
+                "PropertyManagementSystem" + File.separator + "data" + File.separator + "camas.csv");
+        admin.cargarMenus(
+                "PropertyManagementSystem" + File.separator + "data" + File.separator + "menus.csv");
+    }
+
     public void mostrarMenuRecepcionista() {
-        int opcionSeleccionada = Integer.parseInt(input("Por favor seleccione una opción"));
         System.out.println("1. Crear reserva");
         System.out.println("2. Cancelar reserva");
         System.out.println("3. Cerrar sesión");
+        int opcionSeleccionada = Integer.parseInt(input("Por favor seleccione una opción"));
         ejecutarFuncionRecepcionista(opcionSeleccionada);
     }
 
@@ -148,6 +165,7 @@ public class ConsolaHotel {
     }
 
     public void mostrarMenuEmpleado() {
+        System.out.println("\nBienvenido al menú de empleado\n");
         System.out.println("1. Consultar información de una habitación");
         System.out.println("2. Consultar información de un restaurante");
         System.out.println("3. Listar servicios");
@@ -164,8 +182,13 @@ public class ConsolaHotel {
     }
 
     public void ejecutarFuncionEmpleado(int opcion) {
-        if (opcion == 1)
+        if (opcion == 1) {
+            System.out.println("Habitaciones del hotel: ");
+            for (Habitacion habitacion : hotel.getHabitaciones().values())
+                System.out.println(habitacion.toString());
             consultarHabitacion();
+        }
+
         if (opcion == 2)
             consultarMenuRestaurante();
         // if (opcion == 3)

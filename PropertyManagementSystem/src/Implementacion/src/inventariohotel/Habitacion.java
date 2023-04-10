@@ -1,12 +1,12 @@
-package inventarioHotel;
+package inventariohotel;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.EnumMap;
 import java.util.HashMap;
 
-import sistemaReservas.Huesped;
-import sistemaReservas.Reserva;
+import sistemareservas.Huesped;
+import sistemareservas.Reserva;
 
 public class Habitacion {
 	private String id;
@@ -29,6 +29,8 @@ public class Habitacion {
 		this.ubicacion = ubicacion;
 		this.tipo = tipo;
 		this.features = features;
+		this.camas = new EnumMap<>(TipoCama.class);
+		this.reservas = new HashMap<>();
 	}
 
 	public String getId() {

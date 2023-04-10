@@ -1,4 +1,4 @@
-package inventarioHotel;
+package inventariohotel;
 
 import java.util.HashMap;
 
@@ -8,6 +8,7 @@ public class Restaurante {
 
 	public Restaurante(String nombre) {
 		this.nombre = nombre;
+		menu = new HashMap<>();
 	}
 
 	public String getNombre() {

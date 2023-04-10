@@ -1,4 +1,4 @@
-package inventarioHotel;
+package inventariohotel;
 
 public enum TipoHabitacion {
     ESTANDAR,

@@ -1,4 +1,4 @@
-package inventarioHotel;
+package inventariohotel;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -11,7 +11,7 @@ public class Hotel {
     HashMap<String, Servicio> servicios;
     HashMap<Date, List<Tarifa>> tarifasPorFecha;
 
-    Hotel() {
+    public Hotel() {
         habitaciones = new HashMap<>();
         restaurantes = new HashMap<>();
         servicios = new HashMap<>();

@@ -1,4 +1,4 @@
-package sistemaReservas;
+package sistemareservas;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -11,13 +11,13 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 
-import inventarioHotel.Feature;
-import inventarioHotel.Habitacion;
-import inventarioHotel.Hotel;
-import inventarioHotel.Tarifa;
-import inventarioHotel.TipoCama;
-import inventarioHotel.TipoHabitacion;
-import inventarioHotel.Restaurante;
+import inventariohotel.Feature;
+import inventariohotel.Habitacion;
+import inventariohotel.Hotel;
+import inventariohotel.Restaurante;
+import inventariohotel.Tarifa;
+import inventariohotel.TipoCama;
+import inventariohotel.TipoHabitacion;
 
 public class Administrador extends Usuario {
     Hotel hotel; // TODO:
@@ -75,8 +75,8 @@ public class Administrador extends Usuario {
                 this.agregarHabitacion(habitacion);
                 linea = br.readLine();
             }
-
-            br.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -99,8 +99,8 @@ public class Administrador extends Usuario {
                 }
                 linea = br.readLine();
             }
-
-            br.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -125,8 +125,8 @@ public class Administrador extends Usuario {
                 restaurante.addPlato(plato, precio);
                 linea = br.readLine();
             }
-
-            br.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

@@ -1,4 +1,4 @@
-package sistemaReservas;
+package sistemareservas;
 
 public class Empleado {
 
