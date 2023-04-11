@@ -1,3 +1,5 @@
 id, ubicacion, tipo, balcon, vista, cocina
-1,planta superior,DOBLE,0,1,1
-2,planta superior,DOBLE,0,1,1
+1,torre a,DOBLE,0,1,1
+2,torre a,DOBLE,0,1,1
+3,torre a,SUITE,1,1,1
+4,torre a,ESTANDAR,1,1,1
