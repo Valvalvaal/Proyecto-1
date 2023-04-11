@@ -21,8 +21,8 @@ import sistemareservas.Usuario;
 import utils.DateUtils;
 
 public class ConsolaHotel {
-    public static final String USERS_FILE_PATH = "PropertyManagementSystem" + File.separator + "data" + File.separator
-            + "usuarios.csv";
+    public static final String BASE_DATA_PATH = "PropertyManagementSystem" + File.separator + "data" + File.separator;
+    public static final String SELECCIONE_UNA_OPCION = "Por favor seleccione una opción";
     /**
      * Este es el hotel que se usará para hacer todas las
      * operaciones de la aplicación.
@@ -54,7 +54,7 @@ public class ConsolaHotel {
         System.out.println("Selecciona una opción:");
         System.out.println("1. Iniciar sesión");
         System.out.println("2. Cerrar programa");
-        int opcionSeleccionada = Integer.parseInt(input("Por favor seleccione una opción"));
+        int opcionSeleccionada = Integer.parseInt(input(SELECCIONE_UNA_OPCION));
         if (opcionSeleccionada == 1) {
             iniciarSesion();
         }
@@ -73,7 +73,7 @@ public class ConsolaHotel {
     }
 
     public void cargarUsuarios() throws IOException {
-        try (BufferedReader br = new BufferedReader(new FileReader(USERS_FILE_PATH))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(BASE_DATA_PATH + "usuarios.csv"))) {
             String linea = br.readLine();
 
             linea = br.readLine();
@@ -86,8 +86,6 @@ public class ConsolaHotel {
                 usuarios.put(username, new Usuario(username, password, tipoUsuario));
                 linea = br.readLine();
             }
-
-            br.close();
         }
     }
 
@@ -112,7 +110,7 @@ public class ConsolaHotel {
         System.out.println("5. Cargar menus de los restaurantes");
         System.out.println("6. Modificar tarifas de servicios");
         System.out.println("7. Cerrar sesión");
-        int opcionSeleccionada = Integer.parseInt(input("Por favor seleccione una opción"));
+        int opcionSeleccionada = Integer.parseInt(input(SELECCIONE_UNA_OPCION));
 
         ejecutarFuncionAdmin(opcionSeleccionada);
     }
@@ -155,28 +153,35 @@ public class ConsolaHotel {
                 System.out.println("Ingresó un nombre de archivo inválido, inténtelo de nuevo");
                 e.printStackTrace();
             }
-        } else if (opcion == 6)
-            //modificarTarifasServicios();
-          else if (opcion == 7)
+        } else if (opcion == 6) {
+            // modificarTarifasServicios();
+        } else if (opcion == 7)
             usuario = null;
     }
 
     private void agregarTarifa(TipoHabitacion tipoHabitacion) {
         System.out.println("Ingrese las fechas en formato (dd/mm/yyyy) ej: 01/01/2020");
-        Date fechaInicio = DateUtils.getDate(input("Fecha de inicio de la tarifa: "));
-        Date fechaFin = DateUtils.getDate(input("Fecha de fin de la tarifa: "));
-        Integer precio = Integer.parseInt(input("Ingrese el precio: "));
-        Tarifa tarifa = new Tarifa(precio, tipoHabitacion);
         try {
+            Date fechaInicio = DateUtils.getDate(input("Fecha de inicio de la tarifa: "));
+            Date fechaFin = DateUtils.getDate(input("Fecha de fin de la tarifa: "));
+            Integer precio = Integer.parseInt(input("Ingrese el precio: "));
+            Tarifa tarifa = new Tarifa(precio, tipoHabitacion);
             hotel.agregarTarifaMultiplesFechas(tarifa, fechaInicio, fechaFin);
         } catch (ParseException e) {
             System.out.println("Ingresó una fecha inválida, inténtelo de nuevo");
+            // agregarTarifa(tipoHabitacion); (Para repetir)
             e.printStackTrace();
         }
     }
 
     private void cargarTarifas() throws IOException {
-        hotel.cargarTarifas("PropertyManagementSystem" + File.separator + "data" + File.separator + "tarifas.csv");
+        try {
+            hotel.cargarTarifas(BASE_DATA_PATH + "tarifas.csv");
+        } catch (ParseException e) {
+            System.out.println(
+                    "Su archivo tiene información inválida, posiblemente una fecha. Arreglelo e intentelo de nuevo");
+            e.printStackTrace();
+        }
     }
 
     private void cargarMenus(String filePath) throws IOException {
@@ -188,12 +193,9 @@ public class ConsolaHotel {
     }
 
     private void cargarHotel() throws IOException {
-        hotel.cargarHabitaciones(
-                "PropertyManagementSystem" + File.separator + "data" + File.separator + "habitaciones.csv");
-        hotel.cargarCamas(
-                "PropertyManagementSystem" + File.separator + "data" + File.separator + "camas.csv");
-        hotel.cargarMenus(
-                "PropertyManagementSystem" + File.separator + "data" + File.separator + "menus.csv");
+        hotel.cargarHabitaciones(BASE_DATA_PATH + "habitaciones.csv");
+        hotel.cargarCamas(BASE_DATA_PATH + "camas.csv");
+        hotel.cargarMenus(BASE_DATA_PATH + "menus.csv");
     }
 
     public void mostrarMenuRecepcionista() {
@@ -201,7 +203,7 @@ public class ConsolaHotel {
         System.out.println("1. Crear reserva");
         System.out.println("2. Cancelar reserva");
         System.out.println("3. Cerrar sesión");
-        int opcionSeleccionada = Integer.parseInt(input("Por favor seleccione una opción"));
+        int opcionSeleccionada = Integer.parseInt(input(SELECCIONE_UNA_OPCION));
         ejecutarFuncionRecepcionista(opcionSeleccionada);
     }
 
@@ -226,7 +228,7 @@ public class ConsolaHotel {
         System.out.println("8. Generar factura");
         System.out.println("9. Cerrar sesión");
 
-        int opcionSeleccionada = Integer.parseInt(input("Por favor seleccione una opción"));
+        int opcionSeleccionada = Integer.parseInt(input(SELECCIONE_UNA_OPCION));
         ejecutarFuncionEmpleado(opcionSeleccionada);
     }
 
@@ -283,7 +285,7 @@ public class ConsolaHotel {
             try {
                 Date fecha = DateUtils.getDate(fechaConsulta);
                 ArrayList<Huesped> huespedes = habitacion.getHuespedes(fecha);
-                if (huespedes.size() == 0) {
+                if (huespedes.isEmpty()) {
                     System.out.println("La habitación está disponible en esta fecha");
                 } else {
                     System.out.println("La habitación está ocupada por los siguientes huéspedes:");

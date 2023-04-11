@@ -200,15 +200,15 @@ public class Hotel {
         }
     }
 
-    public void cargarTarifas(String filePath) throws IOException {
+    public void cargarTarifas(String filePath) throws IOException, ParseException {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String linea = br.readLine();
             linea = br.readLine();
             while (linea != null) {
                 // Separar los valores que estaban en una línea
                 String[] partes = linea.split(",");
-                String fechaInicial = partes[0];
-                String fechaFinal = partes[1];
+                Date fechaInicial = DateUtils.getDate(partes[0]);
+                Date fechaFinal = DateUtils.getDate(partes[1]);
                 TipoHabitacion tipoHabitacion = TipoHabitacion.valueOf(partes[2]);
                 Integer valorTarifaPorNoche = Integer.parseInt(partes[3]);
                 Tarifa tarifa = new Tarifa(valorTarifaPorNoche, tipoHabitacion);

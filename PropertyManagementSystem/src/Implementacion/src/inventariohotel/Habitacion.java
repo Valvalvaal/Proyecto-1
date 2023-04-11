@@ -84,7 +84,6 @@ public class Habitacion {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return "Habitación #: " + id + "\nUbicación: " + ubicacion + "\nTipo: " + tipo + "\nFeatures: " + features;
 	}
 
