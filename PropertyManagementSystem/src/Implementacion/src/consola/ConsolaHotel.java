@@ -13,6 +13,7 @@ import java.util.HashMap;
 import inventariohotel.Habitacion;
 import inventariohotel.Hotel;
 import inventariohotel.Restaurante;
+import inventariohotel.Servicio;
 import inventariohotel.Tarifa;
 import inventariohotel.TipoHabitacion;
 import sistemareservas.Huesped;
@@ -196,6 +197,7 @@ public class ConsolaHotel {
         hotel.cargarHabitaciones(BASE_DATA_PATH + "habitaciones.csv");
         hotel.cargarCamas(BASE_DATA_PATH + "camas.csv");
         hotel.cargarMenus(BASE_DATA_PATH + "menus.csv");
+        hotel.cargarServicios(BASE_DATA_PATH + "servicios.csv");
     }
 
     public void mostrarMenuRecepcionista() {
@@ -208,12 +210,20 @@ public class ConsolaHotel {
     }
 
     private void ejecutarFuncionRecepcionista(int opcion) {
-        // if (opcion == 1)
-        // crearReserva();
-        // if (opcion == 2)
-        // cancelarReserva();
+        if (opcion == 1)
+            crearReserva();
+        if (opcion == 2)
+            cancelarReserva();
         if (opcion == 3)
             usuario = null;
+    }
+
+    private void crearReserva() {
+
+    }
+
+    private void cancelarReserva() {
+
     }
 
     public void mostrarMenuEmpleado() {
@@ -234,17 +244,16 @@ public class ConsolaHotel {
 
     public void ejecutarFuncionEmpleado(int opcion) {
         if (opcion == 1) {
-            System.out.println("Habitaciones del hotel: ");
-            for (Habitacion habitacion : hotel.getHabitaciones().values())
-                System.out.println(habitacion.toString());
             consultarHabitacion();
         }
-
         if (opcion == 2)
             consultarMenuRestaurante();
-        // if (opcion == 3)
-        // ejecutarListarServicios();
-        // if (opcion == 4)
+        if (opcion == 3) {
+            listarServicios();
+        }
+        if (opcion == 4) {
+
+        }
         // ejecutarConsultarReserva();
         // if (opcion == 5)
         // ejecutarRegistrarConsumo();
@@ -256,6 +265,14 @@ public class ConsolaHotel {
         // ejecutarGenerarFactura();
         if (opcion == 9)
             usuario = null;
+    }
+
+    private void listarServicios() {
+        System.out.println("Servicios disponibles en el hotel:");
+        for (String nombreServicio : hotel.getServicios().keySet()) {
+            Servicio servicio = hotel.getServicio(nombreServicio);
+            System.out.println(servicio.toString());
+        }
     }
 
     private void consultarMenuRestaurante() {
@@ -294,7 +311,8 @@ public class ConsolaHotel {
                     }
                 }
             } catch (ParseException e) {
-                System.out.println("La fecha ingresada no es válida.");
+                if (!fechaConsulta.isEmpty())
+                    System.out.println("La fecha ingresada no es válida.");
             }
         }
     }

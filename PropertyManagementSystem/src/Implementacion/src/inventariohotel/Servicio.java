@@ -1,22 +1,22 @@
 package inventariohotel;
 
 public class Servicio {
-	private String servicio;
+	private String nombre;
 	private int precio;
 	private String descripcion;
 
-	public Servicio(String servicio, int precio, String descripcion) {
-		this.servicio = servicio;
+	public Servicio(String nombre, int precio, String descripcion) {
+		this.nombre = nombre;
 		this.precio = precio;
 		this.descripcion = descripcion;
 	}
 
-	public String getServicio() {
-		return servicio;
+	public String getNombre() {
+		return nombre;
 	}
 
-	public void setServicio(String servicio) {
-		this.servicio = servicio;
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
 	public int getPrecio() {
@@ -33,5 +33,11 @@ public class Servicio {
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+
+	@Override
+	public String toString() {
+		return "Servicio(Nombre: " + this.nombre + ", Precio: " + this.precio + " \nDescripción: " + this.descripcion
+				+ ")";
 	}
 }

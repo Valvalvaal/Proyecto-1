@@ -220,4 +220,31 @@ public class Hotel {
         }
     }
 
+    public Servicio getServicio(String nombreServicio) {
+        return this.servicios.get(nombreServicio);
+    }
+
+    public void cargarServicios(String filePath) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String linea = br.readLine();
+            linea = br.readLine();
+            while (linea != null) {
+                // Separar los valores que estaban en una línea
+                String[] partes = linea.split(",");
+                String nombreServicio = partes[0];
+                int precio = Integer.parseInt(partes[1]);
+                String descripcion = partes[2];
+                Servicio servicio = new Servicio(nombreServicio, precio, descripcion);
+                this.agregarServicio(servicio);
+                linea = br.readLine();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void agregarServicio(Servicio servicio) {
+        servicios.put(servicio.getNombre(), servicio);
+    }
+
 }
