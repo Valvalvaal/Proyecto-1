@@ -9,6 +9,8 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 
+import utils.DateUtils;
+
 public class Hotel {
     String nombre;
     HashMap<String, Habitacion> habitaciones;
@@ -83,12 +85,26 @@ public class Hotel {
         tarifasPorFecha.put(fecha, tarifas);
     }
 
-    public void agregarTarifa(Tarifa tarifa, Date fecha) {
+    public void agregarTarifa(Tarifa nuevaTarifa, Date fecha) {
         List<Tarifa> tarifas = this.tarifasPorFecha.get(fecha);
         if (tarifas == null) {
             tarifas = new ArrayList<>();
         }
-        tarifas.add(tarifa);
+        // Si ya existe una tarifa para el mismo tipo de habitación, se deja la de menor
+        // valor
+        boolean reemplazada = false;
+        for (int i = 0; i < tarifas.size() && !reemplazada; i++) {
+            Tarifa tarifaExistente = tarifas.get(i);
+            boolean mismoTipoDeTarifas = tarifaExistente.getTipo() == nuevaTarifa.getTipo();
+            boolean mejorPrecioNuevaTarifa = tarifaExistente.getPrecio() > nuevaTarifa.getPrecio();
+            if (mismoTipoDeTarifas && mejorPrecioNuevaTarifa) {
+                tarifas.set(i, nuevaTarifa);
+                reemplazada = true;
+            }
+        }
+        if (!reemplazada) {
+            tarifas.add(nuevaTarifa);
+        }
         this.tarifasPorFecha.put(fecha, tarifas);
     }
 
@@ -172,6 +188,26 @@ public class Hotel {
                 String plato = partes[1];
                 Integer precio = Integer.parseInt(partes[2]);
                 restaurante.addPlato(plato, precio);
+                linea = br.readLine();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void cargarTarifas(String filePath) throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String linea = br.readLine();
+            linea = br.readLine();
+            while (linea != null) {
+                // Separar los valores que estaban en una línea
+                String[] partes = linea.split(",");
+                Date fechaInicial = DateUtils.getDate(partes[0]);
+                Date fechaFinal = DateUtils.getDate(partes[1]);
+                TipoHabitacion tipoHabitacion = TipoHabitacion.valueOf(partes[2]);
+                Integer valorTarifaPorNoche = Integer.parseInt(partes[3]);
+                Tarifa tarifa = new Tarifa(valorTarifaPorNoche, tipoHabitacion);
+                this.agregarTarifaMultiplesFechas(tarifa, fechaInicial, fechaFinal);
                 linea = br.readLine();
             }
         } catch (Exception e) {

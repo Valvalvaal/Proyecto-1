@@ -14,7 +14,6 @@ import java.util.HashMap;
 import inventariohotel.Habitacion;
 import inventariohotel.Hotel;
 import inventariohotel.Restaurante;
-import sistemareservas.Administrador;
 import sistemareservas.Huesped;
 import sistemareservas.TipoUsuario;
 import sistemareservas.Usuario;
@@ -24,9 +23,8 @@ public class ConsolaHotel {
     public static final String USERS_FILE_PATH = "PropertyManagementSystem" + File.separator + "data" + File.separator
             + "usuarios.csv";
     /**
-     * Esta es el hotel que se usará para hacer todas las
-     * operaciones de la aplicación. Esta calculadora también contiene toda la
-     * información sobre los atletas después de que se cargue desde un archivo.
+     * Este es el hotel que se usará para hacer todas las
+     * operaciones de la aplicación.
      */
     private Hotel hotel = new Hotel();
     private Usuario usuario;
@@ -121,19 +119,41 @@ public class ConsolaHotel {
             try {
                 cargarHotel();
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-        // if (opcion == 2)
-        // ejecutarCargarHabitaciones();
-        // if (opcion == 3)
-        // ejecutarCargarTarifas();
-        // if (opcion == 4)
-        // ejecutarModificarTarifas();
-        // if (opcion == 5)
-        // ejecutarCargarMenus();
+        if (opcion == 2) {
+            String path = input("Ingrese el path del archivo csv de habitaciones que desea cargar");
+            cargarHabitaciones(path);
+        }
+        if (opcion == 3)
+            cargarTarifas();
+        if (opcion == 4)
+            modificarTarifas();
+        if (opcion == 5) {
+            String path = input(
+                    "Ingrese el path del archivo csv de menus que desea cargar." +
+                            "Recuerde que sobreescribirá los datos de los menus de restaurantes actuales con los datos de su archivo.");
+            try {
+                cargarHabitaciones(path);
+            } catch (IOException e) {
+                System.out.println("Ingresó un nombre de archivo inválido, inténtelo de nuevo")
+                e.printStackTrace();
+            }
+        }
         if (opcion == 6)
             usuario = null;
+    }
+
+    private void cargarTarifas() throws IOException {
+        hotel.cargarTarifas("PropertyManagementSystem" + File.separator + "data" + File.separator + "tarifas.csv");
+    }
+
+    private void cargarMenus(String filePath) throws IOException {
+        hotel.cargarMenus(filePath);
+    }
+
+    private void cargarHabitaciones(String filePath) throws IOException {
+        hotel.cargarHabitaciones(filePath);
     }
 
     private void cargarHotel() throws IOException {
