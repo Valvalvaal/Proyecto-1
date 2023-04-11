@@ -2,7 +2,6 @@ package consola;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,6 +13,8 @@ import java.util.HashMap;
 import inventariohotel.Habitacion;
 import inventariohotel.Hotel;
 import inventariohotel.Restaurante;
+import inventariohotel.Tarifa;
+import inventariohotel.TipoHabitacion;
 import sistemareservas.Huesped;
 import sistemareservas.TipoUsuario;
 import sistemareservas.Usuario;
@@ -102,13 +103,15 @@ public class ConsolaHotel {
     }
 
     public void mostrarMenuAdmin() {
+        System.out.println("\nBienvenido al menú de administrador\n");
         System.out.println("0. Cargar hotel");
         System.out.println("1. Agregar habitación");
         System.out.println("2. Cargar csv de habitaciones");
         System.out.println("3. Cargar tarifas");
-        System.out.println("4. Modificar tarifas de servicios");
+        System.out.println("4. Agregar/Modificar tarifas de habitaciones");
         System.out.println("5. Cargar menus de los restaurantes");
-        System.out.println("6. Cerrar sesión");
+        System.out.println("6. Modificar tarifas de servicios");
+        System.out.println("7. Cerrar sesión");
         int opcionSeleccionada = Integer.parseInt(input("Por favor seleccione una opción"));
 
         ejecutarFuncionAdmin(opcionSeleccionada);
@@ -121,27 +124,55 @@ public class ConsolaHotel {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        if (opcion == 2) {
-            String path = input("Ingrese el path del archivo csv de habitaciones que desea cargar");
-            cargarHabitaciones(path);
-        }
-        if (opcion == 3)
-            cargarTarifas();
-        if (opcion == 4)
-            modificarTarifas();
-        if (opcion == 5) {
+        else if (opcion == 1) {
+            // agregarHabitacion();
+        } else if (opcion == 2) {
+            String path = input("Ingrese el path del archivo csv de habitaciones que desea cargar: ");
+            try {
+                cargarHabitaciones(path);
+            } catch (IOException e) {
+                System.out.println("Ingresó un nombre de archivo inválido, inténtelo de nuevo");
+                e.printStackTrace();
+            }
+        } else if (opcion == 3)
+            try {
+                cargarTarifas();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        else if (opcion == 4) {
+            TipoHabitacion tipo = TipoHabitacion.valueOf(
+                    input("Ingrese el tipo de habitación para el cual desea modificar las tarifas: ").toUpperCase());
+            agregarTarifa(tipo);
+        } else if (opcion == 5) {
             String path = input(
                     "Ingrese el path del archivo csv de menus que desea cargar." +
                             "Recuerde que sobreescribirá los datos de los menus de restaurantes actuales con los datos de su archivo.");
             try {
-                cargarHabitaciones(path);
+                cargarMenus(path);
             } catch (IOException e) {
-                System.out.println("Ingresó un nombre de archivo inválido, inténtelo de nuevo")
+                System.out.println("Ingresó un nombre de archivo inválido, inténtelo de nuevo");
                 e.printStackTrace();
             }
-        }
-        if (opcion == 6)
+        } else if (opcion == 6)
+            //modificarTarifasServicios();
+          else if (opcion == 7)
             usuario = null;
+    }
+
+    private void agregarTarifa(TipoHabitacion tipoHabitacion) {
+        System.out.println("Ingrese las fechas en formato (dd/mm/yyyy) ej: 01/01/2020");
+        Date fechaInicio = DateUtils.getDate(input("Fecha de inicio de la tarifa: "));
+        Date fechaFin = DateUtils.getDate(input("Fecha de fin de la tarifa: "));
+        Integer precio = Integer.parseInt(input("Ingrese el precio: "));
+        Tarifa tarifa = new Tarifa(precio, tipoHabitacion);
+        try {
+            hotel.agregarTarifaMultiplesFechas(tarifa, fechaInicio, fechaFin);
+        } catch (ParseException e) {
+            System.out.println("Ingresó una fecha inválida, inténtelo de nuevo");
+            e.printStackTrace();
+        }
     }
 
     private void cargarTarifas() throws IOException {
@@ -166,6 +197,7 @@ public class ConsolaHotel {
     }
 
     public void mostrarMenuRecepcionista() {
+        System.out.println("\nBienvenido al menú de recepcionista\n");
         System.out.println("1. Crear reserva");
         System.out.println("2. Cancelar reserva");
         System.out.println("3. Cerrar sesión");
@@ -192,8 +224,7 @@ public class ConsolaHotel {
         System.out.println("6. Registrar entrada de huésped");
         System.out.println("7. Registrar salida de huésped");
         System.out.println("8. Generar factura");
-        System.out.println("9. Cancelar reserva");
-        System.out.println("10. Cerrar sesión");
+        System.out.println("9. Cerrar sesión");
 
         int opcionSeleccionada = Integer.parseInt(input("Por favor seleccione una opción"));
         ejecutarFuncionEmpleado(opcionSeleccionada);
@@ -214,18 +245,14 @@ public class ConsolaHotel {
         // if (opcion == 4)
         // ejecutarConsultarReserva();
         // if (opcion == 5)
-        // ejecutarCrearReserva();
-        // if (opcion == 6)
         // ejecutarRegistrarConsumo();
-        // if (opcion == 7)
+        // if (opcion == 6)
         // ejecutarRegistrarEntrada();
-        // if (opcion == 8)
+        // if (opcion == 7)
         // ejecutarRegistrarSalida();
-        // if (opcion == 9)
+        // if (opcion == 8)
         // ejecutarGenerarFactura();
-        // if (opcion == 10)
-        // ejecutarCancelarReserva();
-        if (opcion == 11)
+        if (opcion == 9)
             usuario = null;
     }
 

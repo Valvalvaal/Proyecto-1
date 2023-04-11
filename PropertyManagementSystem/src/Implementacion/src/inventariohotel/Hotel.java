@@ -3,6 +3,7 @@ package inventariohotel;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.EnumMap;
@@ -110,10 +111,14 @@ public class Hotel {
 
     public void agregarTarifaMultiplesFechas(Tarifa tarifa, Date fechaInicio, Date fechaFin) {
         Date fecha = fechaInicio;
-        while (fecha.compareTo(fechaFin) <= 0) {
+        while (fechaInicio.compareTo(fechaFin) <= 0) {
             agregarTarifa(tarifa, fecha);
             fecha = new Date(fecha.getTime() + 86400000); // 86400000 ms = 1 día
         }
+    }
+
+    public List<Tarifa> getListaDeTarifasPorFechaEspecifica(Date fecha) {
+        return this.tarifasPorFecha.getOrDefault(fecha, new ArrayList<>());
     }
 
     /**
@@ -202,8 +207,8 @@ public class Hotel {
             while (linea != null) {
                 // Separar los valores que estaban en una línea
                 String[] partes = linea.split(",");
-                Date fechaInicial = DateUtils.getDate(partes[0]);
-                Date fechaFinal = DateUtils.getDate(partes[1]);
+                String fechaInicial = partes[0];
+                String fechaFinal = partes[1];
                 TipoHabitacion tipoHabitacion = TipoHabitacion.valueOf(partes[2]);
                 Integer valorTarifaPorNoche = Integer.parseInt(partes[3]);
                 Tarifa tarifa = new Tarifa(valorTarifaPorNoche, tipoHabitacion);
